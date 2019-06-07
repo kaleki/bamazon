@@ -1,0 +1,25 @@
+{
+  "name": "bamazon",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bamazonCustomer.js",
+  "dependencies": {
+    "cli-table3": "^0.5.1",
+    "inquirer": "^6.3.1",
+    "mysql": "^2.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kaleki/bamazon.git"
+  },
+  "author": "Kale Intharaksa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kaleki/bamazon/issues"
+  },
+  "homepage": "https://github.com/kaleki/bamazon#readme"
+}
