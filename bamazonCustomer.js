@@ -16,24 +16,29 @@ var display = function(){
         if (err) throw err;
         console.log("Welcome to Bamazon for Shoes");
         console.log("Find Your Kicks!");
+        
+        var table = new Table({
+            head: ["Product ID", "Product Name", "Price"],
+            colWidths: [15, 50, 10],
+            colAligns: ["center", "left", "right"],
+            style:{
+                head: ["red"],
+                compact: true
+            }
+        });
         for (var i = 0; i < res.length; i++){
             table.push([res[i].id, res[i].product_name, res[i].price]);
-        }
+}
+
+     
+        console.log(table.toString());
+        console.log("");
+        shop(res);
     });
-    var table = new Table({
-        head: ["Product ID", "Product Name", "Price"],
-        colWidths: [15, 50, 10],
-        colAligns: ["center", "left", "right"],
-        style:{
-            head: ["red"],
-            compact: true
-        }
-    });
-    console.log(table.toString());
-    console.log("");
+    
 };
 
-function shop() {
+function shop(amount) {
     inquirer.prompt([{
         name: "buyProducts",
         type: "input",
@@ -57,29 +62,29 @@ function shop() {
             }
         }
     }]).then(function(answer) {
-
-        connection.query(res.selectItemId, [answer.id], function(err, res) {
-
-            var quantity = res[0].stock_quantity;
-            var newQuantity = quantity - answer.quantity;
-
-            var totalCost = res[0].price * answer.quantity;
-
-            if(newQuantity < 0) {
-
-            	console.log("Sorry, Not enough to go around!");
-
-            } else {
-            	connection.query(res.updateStock, [newQuantity, answer.id], function(err, res) {
-            		
-            		console.log("TOTAL: $" + totalCost);
-            		console.log("Thanks for shopping at Bamazon shoes! Your order will be shipped!")
-
-            	})
+        
+        for (var i = 0; i < amount.length; i++){
+           
+            if (amount[i].id == answer.buyProducts){
+                if (amount[i].quantity < answer.quantity){
+                    console.log("Not enough! Sorry");
+                    shop(amount);
+                }
+                else {
+                    connection.query("UPDATE products SET quantity = quantity - ? WHERE id = ?", [answer.quantity, answer.buyProducts],  function(err, res) {
+                        console.log("Great! Your Shoes are being Shipped!");
+                        // display();
+            
+                        
+                    })
+                }
             }
-        })
+
+        
+        }
+
+        
     })
 };
-
-display(shop);
-shop();
+console.log("Great! Your Shoes are being Shipped!")
+display();
